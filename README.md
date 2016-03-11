@@ -1,5 +1,7 @@
 # ember-hubspot-form
 
+[![Build Status](https://travis-ci.org/coUrbanize/ember-hubspot-form.svg?branch=master)](https://travis-ci.org/coUrbanize/ember-hubspot-form)
+
 A thin wrapper around [Hubspot Forms](http://developers.hubspot.com/docs/methods/forms/forms_overview) to make integration in Ember Apps easier.
 
 ## Installation
