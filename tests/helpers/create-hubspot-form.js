@@ -3,7 +3,9 @@ import { find } from '@ember/test-helpers';
 import { settled } from '@ember/test-helpers';
 import { assert } from '@ember/debug';
 
-export default async function createHubspotForm(validEmail = 'example@mail.com') {
+export default async function createHubspotForm(
+  validEmail = 'example@mail.com'
+) {
   await new Promise((resolve) => {
     const targetNode = find('#hubspot-form-target');
     const form = document.createElement('form');

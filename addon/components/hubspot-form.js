@@ -27,7 +27,11 @@ export default class HubspotFormComponent extends Component {
     }
 
     yield injectScript('//js.hsforms.net/forms/v2.js');
-    yield waitForProperty(this, 'targetNode', (targetNode) => targetNode !== null);
+    yield waitForProperty(
+      this,
+      'targetNode',
+      (targetNode) => targetNode !== null
+    );
     const { region, portalId, formId } = this.config.get('APP.hubspot');
     // eslint-disable-next-line no-undef
     hbspt.forms.create({
@@ -46,7 +50,11 @@ export default class HubspotFormComponent extends Component {
         }
       },
     });
-    yield waitForProperty(this.hubspotForm, 'isFormReady', (value) => value === true);
+    yield waitForProperty(
+      this.hubspotForm,
+      'isFormReady',
+      (value) => value === true
+    );
   }
 
   @dropTask
