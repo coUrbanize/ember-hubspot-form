@@ -1,0 +1,20 @@
+<div
+  style={{this.style}}
+  id="hubspot-form-target"
+  {{create-ref "targetNode"}}
+  {{did-insert (perform this.setupForm)}}
+  ...attributes
+>
+</div>
+{{yield
+  (hash
+    onInput=(perform this.onInput)
+    onSubmit=(perform this.onSubmit)
+    onCheckboxChange=(perform this.onCheckboxChange)
+    isInputDisabled=(or this.setupForm.isRunning this.isInputDisabled)
+    isFormReady=this.hubspotForm.isFormReady
+    error=this.error
+    isSuccessSubmitted=this.hubspotForm.isSuccessSubmitted
+    Success=(component "blank-component")
+  )
+}}
