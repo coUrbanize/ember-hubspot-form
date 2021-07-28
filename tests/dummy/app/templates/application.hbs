@@ -1,5 +1,18 @@
-{{page-title "Dummy"}}
-
-<h2 id="title">Welcome to Ember</h2>
-
+{{page-title "HubspotForm"}}
+<HubspotForm
+  as |data|
+>
+  {{#if data.isSuccessSubmitted}}
+    <data.Success>
+      <div class="success">success</div>
+    </data.Success>
+  {{else}}
+    <div class="is-form-ready">is-form-ready:{{data.isFormReady}}</div>
+    <div class="is-input-disabled">is-input-disabled:{{data.isInputDisabled}}</div>
+    <div class="error">error:{{data.error}}</div>
+    <button class="checkbox" {{on "click" data.onCheckboxChange}}>checkbox</button>
+    <input class="email-input" {{on "input" data.onInput}}/>
+    <button class="submit-button" {{on "click" data.onSubmit}}>submit-button</button>
+  {{/if}}
+</HubspotForm>
 {{outlet}}
