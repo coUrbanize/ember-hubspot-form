@@ -28,7 +28,6 @@ export default class HubspotFormComponent extends Component {
 
     yield injectScript('//js.hsforms.net/forms/v2.js');
     yield waitForProperty(this, 'targetNode', (targetNode) => targetNode !== null);
-    console.log(this.config.get('APP.hubspot'));
     const { region, portalId, formId } = this.config.get('APP.hubspot');
     // eslint-disable-next-line no-undef
     hbspt.forms.create({
