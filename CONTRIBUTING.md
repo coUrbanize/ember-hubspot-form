@@ -2,15 +2,15 @@
 
 ## Installation
 
-* `git clone <repository-url>`
+* `git clone git@github.com:coUrbanize/ember-hubspot-form.git`
 * `cd ember-hubspot-form`
-* `npm install`
+* `yarn install`
 
 ## Linting
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+* `yarn lint:hbs`
+* `yarn lint:js`
+* `yarn lint:js -- --fix`
 
 ## Running tests
 
