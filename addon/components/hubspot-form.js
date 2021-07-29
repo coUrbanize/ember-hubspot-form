@@ -7,6 +7,8 @@ import pseudoJquery from '../utils/pseudo-jquery';
 import { inject as service } from '@ember/service';
 import { set } from '@ember/object';
 import { htmlSafe } from '@ember/string';
+import { assert } from '@ember/debug';
+import { isPresent } from '@ember/utils';
 
 export default class HubspotFormComponent extends Component {
   @tracked emailInputValue;
@@ -15,6 +17,13 @@ export default class HubspotFormComponent extends Component {
   @service hubspotForm;
   @service config;
   @ref('targetNode') targetNode = null;
+
+  constructor() {
+    super(...arguments);
+    assert('Require APP.hubspot.region in config/environment.js', isPresent(this.config.get('APP.hubspot.region')));
+    assert('Require APP.hubspot.portalId in config/environment.js', isPresent(this.config.get('APP.hubspot.portalId')));
+    assert('Require APP.hubspot.formId in config/environment.js', isPresent(this.config.get('APP.hubspot.formId')));
+  }
 
   get style() {
     return htmlSafe('display: none');
