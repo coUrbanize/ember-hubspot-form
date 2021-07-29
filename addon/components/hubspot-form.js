@@ -20,9 +20,18 @@ export default class HubspotFormComponent extends Component {
 
   constructor() {
     super(...arguments);
-    assert('Require APP.hubspot.region in config/environment.js', isPresent(this.config.get('APP.hubspot.region')));
-    assert('Require APP.hubspot.portalId in config/environment.js', isPresent(this.config.get('APP.hubspot.portalId')));
-    assert('Require APP.hubspot.formId in config/environment.js', isPresent(this.config.get('APP.hubspot.formId')));
+    assert(
+      'Require APP.hubspot.region in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.region'))
+    );
+    assert(
+      'Require APP.hubspot.portalId in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.portalId'))
+    );
+    assert(
+      'Require APP.hubspot.formId in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.formId'))
+    );
   }
 
   get style() {
