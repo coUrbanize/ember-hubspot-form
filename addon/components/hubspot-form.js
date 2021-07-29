@@ -9,7 +9,7 @@ import { set } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 
 export default class HubspotFormComponent extends Component {
-  @tracked emailInput;
+  @tracked emailInputValue;
   @tracked error = null;
   @tracked isInputDisabled = true;
   @service hubspotForm;
