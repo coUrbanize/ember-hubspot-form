@@ -7,10 +7,12 @@
   >
     <div class="is-form-ready">is-form-ready:{{data.isFormReady}}</div>
     <div class="is-input-disabled">is-input-disabled:{{data.isInputDisabled}}</div>
-    <div class="error">error:{{data.error}}</div>
-    <button type="button" class="checkbox" {{on "click" data.onCheckboxChange}}>checkbox</button>
-    <input class="email-input" {{on "input" data.onInput}}/>
-    <button type="button" class="submit-button" {{on "click" data.onSubmit}}>submit-button</button>
+    <button type="button" class="checkbox" {{on "click" data.onCheckboxChange}} disabled={{not data.isFormReady}}>checkbox</button>
+    <input class="email-input" {{on "input" data.onInput}} disabled={{data.isInputDisabled}}/>
+    <button type="button" class="submit-button" {{on "click" data.onSubmit}} disabled={{data.isInputDisabled}}>submit-button</button>
+    {{#if data.error}}
+      <div class="error">error:{{data.error}}</div>
+    {{/if}}
   </hubspotForm.Content>
   <hubspotForm.Success>
     <div class="success">success</div>
