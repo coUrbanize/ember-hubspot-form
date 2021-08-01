@@ -17,17 +17,19 @@ Install this addon with Ember CLI:
 
 ```js
 const ENV = {
+  // ...
+
+  APP: {
+    hubspot: {
+      region: 'na1',
+      portalId: '000000',
+      formId: '00000000-0000-0000-0000-00000000000',
+    },
+
     // ...
 
-    APP: {
-      hubspot: {
-        region: 'na1',
-        portalId: '000000',
-        formId: '00000000-0000-0000-0000-00000000000',
-      },
-      // ...
-    },
-  };
+  },
+};
 ```
 
 ## Usage
@@ -40,9 +42,27 @@ Add the component to one of your templates:
   as |hubspotForm|
 >
   <hubspotForm.Content as |data|>
-    <button type="button" class="checkbox" {{on "click" data.onCheckboxChange}} disabled={{not data.isFormReady}}>checkbox</button>
-    <input class="email-input" {{on "input" data.onInput}} disabled={{data.isInputDisabled}}/>
-    <button type="button" class="submit-button" {{on "click" data.onSubmit}} disabled={{data.isInputDisabled}}>submit-button</button>
+    <button
+      type="button"
+      class="checkbox"
+      disabled={{not data.isFormReady}}
+      {{on "click" data.onCheckboxChange}}
+    >
+      checkbox
+    </button>
+    <input
+      class="email-input"
+      disabled={{data.isInputDisabled}}
+      {{on "input" data.onInput}}
+    />
+    <button 
+      type="button" 
+      class="submit-button"
+      disabled={{data.isInputDisabled}}
+      {{on "click" data.onSubmit}}
+    >
+      submit-button
+    </button>
     {{#if data.error}}
       <div class="error">error:{{data.error}}</div>
     {{/if}}
