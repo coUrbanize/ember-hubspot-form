@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { render, click, fillIn } from '@ember/test-helpers';
-import hubspotFormComponent from '../helpers/page/components/hubspot-form';
+import hubspotFormComponent from '../../helpers/page/components/hubspot-form';
 import { create } from 'ember-cli-page-object';
-import createHubspotForm from '../helpers/create-hubspot-form';
-import setupHubspotForm from '../helpers/setup-hubspot-form';
+import createHubspotForm from '../../helpers/create-hubspot-form';
+import setupHubspotForm from '../../helpers/setup-hubspot-form';
 
 const hubspotForm = create(hubspotFormComponent);
 
@@ -73,13 +73,9 @@ module('Integration | Component | HubspotForm', function (hooks) {
   function renderComponent() {
     return render(hbs`
       <HubspotForm
-        as |data|
+        as |hubspotForm|
       >
-        {{#if data.isSuccessSubmitted}}
-          <data.Success>
-            <div class="success"></div>
-          </data.Success>
-        {{else}}
+        <hubspotForm.Content as |data|>
           <div class="yield-form">
             <div class="is-form-ready">{{data.isFormReady}}</div>
             <div class="is-input-disabled">{{data.isInputDisabled}}</div>
@@ -88,7 +84,10 @@ module('Integration | Component | HubspotForm', function (hooks) {
             <input class="email-input" {{on "input" data.onInput}}/>
             <button class="submit-button" {{on "click" data.onSubmit}}></button>
           </div>
-        {{/if}}
+        </hubspotForm.Content>
+        <hubspotForm.Success>
+          <div class="success"></div>
+        </hubspotForm.Success>
       </HubspotForm>
     `);
   }
