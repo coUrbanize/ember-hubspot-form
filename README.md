@@ -37,20 +37,19 @@ Add the component to one of your templates:
 ```handlebars
 <HubspotForm
   @onFormSubmitted={{noop}}
-  as |data|
+  as |hubspotForm|
 >
-  {{#if data.isSuccessSubmitted}}
-    <data.Success>
-      <div class="success">success</div>
-    </data.Success>
-  {{else}}
+  <hubspotForm.Content as |data|>
     <div class="is-form-ready">is-form-ready:{{data.isFormReady}}</div>
     <div class="is-input-disabled">is-input-disabled:{{data.isInputDisabled}}</div>
     <div class="error">error:{{data.error}}</div>
-    <button class="checkbox" {{on "click" data.onCheckboxChange}}>checkbox</button>
+    <button type="button" class="checkbox" {{on "click" data.onCheckboxChange}}>checkbox</button>
     <input class="email-input" {{on "input" data.onInput}}/>
-    <button class="submit-button" {{on "click" data.onSubmit}}>submit-button</button>
-  {{/if}}
+    <button type="button" class="submit-button" {{on "click" data.onSubmit}}>submit-button</button>
+  </hubspotForm.Content>
+  <hubspotForm.Success>
+    <div class="success">success</div>
+  </hubspotForm.Success>
 </HubspotForm>
 ```
 
