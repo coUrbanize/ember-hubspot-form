@@ -75,7 +75,9 @@ module('Integration | Component | HubspotForm', function (hooks) {
       <HubspotForm
         as |hubspotForm|
       >
-        <hubspotForm.Content as |data|>
+        <hubspotForm.Content
+         as |data|
+        >
           <div class="yield-form">
             <div class="is-form-ready">{{data.isFormReady}}</div>
             <div class="is-input-disabled">{{data.isInputDisabled}}</div>
