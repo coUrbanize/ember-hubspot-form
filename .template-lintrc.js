@@ -2,4 +2,7 @@
 
 module.exports = {
   extends: 'octane',
+  'no-implicit-this': {
+    allow: ['noop'],
+  },
 };
