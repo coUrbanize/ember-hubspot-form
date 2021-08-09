@@ -73,7 +73,7 @@ Add the component to one of your templates:
 </HubspotForm>
 ```
 
-Please see the [Hubspot Form documentation](http://developers.hubspot.com/docs/methods/forms/advanced_form_options) for all details. Currently the addon supports following configuration options:
+Please see the [Hubspot Form documentation](http://developers.hubspot.com/docs/methods/forms/advanced_form_options) for all details.
 
 ### Contributing
 
