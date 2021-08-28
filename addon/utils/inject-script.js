@@ -2,6 +2,9 @@ import { Promise } from 'rsvp';
 
 export default async function injectScript(url, options = {}) {
   await new Promise((resolve) => {
+    if (document.querySelector(`script[src="${url}"]`)) {
+      return resolve();
+    }
     const script = document.createElement('script');
     script.setAttribute('src', url);
     script.setAttribute('charset', 'utf-8');
