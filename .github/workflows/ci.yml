@@ -35,5 +35,7 @@ jobs:
           node-version: '12.x'
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+      - name: Install ember-cli
+        run: yarn global add ember-cli
       - name: Test
-        run: yarn test
+        run: ember try:each
