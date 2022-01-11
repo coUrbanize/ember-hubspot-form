@@ -57,7 +57,7 @@ export default class HubspotFormComponent extends Component {
       portalId,
       formId,
       target: `#${this.targetNode.id}`,
-      onBeforeFormInit: pseudoJquery,
+      onBeforeFormInit: window.jQuery ? () => {} : pseudoJquery,
       onFormReady: () => {
         set(this, 'hubspotForm.isFormReady', true);
       },
