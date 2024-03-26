@@ -1,47 +1,107 @@
-/* global hbspt */
-import Ember from 'ember';
-import layout from '../templates/components/hubspot-form';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { dropTask, timeout, waitForProperty } from 'ember-concurrency';
+import { ref } from 'ember-ref-bucket';
+import injectScript from '../utils/inject-script';
+import pseudoJquery from '../utils/pseudo-jquery';
+import { inject as service } from '@ember/service';
+import { set } from '@ember/object';
+import { htmlSafe } from '@ember/string';
+import { assert } from '@ember/debug';
+import { isPresent } from '@ember/utils';
 
-const {
-  get,
-  isPresent,
-  computed,
-} = Ember;
+export default class HubspotFormComponent extends Component {
+  @tracked emailInputValue;
+  @tracked error = null;
+  @tracked isInputDisabled = true;
+  @service hubspotForm;
+  @service config;
+  @ref('targetNode') targetNode = null;
 
-const { warn } = Ember.Logger;
+  constructor() {
+    super(...arguments);
+    assert(
+      'Require APP.hubspot.region in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.region'))
+    );
+    assert(
+      'Require APP.hubspot.portalId in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.portalId'))
+    );
+    assert(
+      'Require APP.hubspot.formId in config/environment.js',
+      isPresent(this.config.get('APP.hubspot.formId'))
+    );
+  }
 
-export default Ember.Component.extend({
+  get style() {
+    return htmlSafe('display: none');
+  }
 
-  layout,
-
-  hasValidFormConfig: computed('portalId', 'formId', {
-    get() {
-      return (isPresent(get(this, 'portalId')) && isPresent(get(this, 'formId')));
+  @dropTask
+  *setupForm() {
+    if (this.config.get('environment') === 'test') {
+      return;
     }
-  }),
 
-  didReceiveAttrs() {
-    this._super(...arguments);
+    yield injectScript('//js.hsforms.net/forms/v2.js');
+    yield waitForProperty(
+      this,
+      'targetNode',
+      (targetNode) => targetNode !== null
+    );
+    const { region, portalId, formId } = this.config.get('APP.hubspot');
+    // eslint-disable-next-line no-undef
+    hbspt.forms.create({
+      region,
+      portalId,
+      formId,
+      target: `#${this.targetNode.id}`,
+      onBeforeFormInit: window.jQuery ? () => {} : pseudoJquery,
+      onFormReady: () => {
+        set(this, 'hubspotForm.isFormReady', true);
+      },
+      onFormSubmitted: () => {
+        set(this, 'hubspotForm.isSuccessSubmitted', true);
+        if (this.args.onFormSubmitted) {
+          this.args.onFormSubmitted(this.emailInputValue);
+        }
+      },
+    });
+    yield waitForProperty(
+      this.hubspotForm,
+      'isFormReady',
+      (value) => value === true
+    );
+  }
 
-    if (!get(this, 'hasValidFormConfig')) {
-      warn('Ember Hubspot Form could not be inserted: it requires a valid `portalId` and `formId`. ');
-    }
-  },
+  @dropTask
+  *onInput(event) {
+    this.error = null;
+    this.emailInputValue = event.target.value;
+    const emailInput = document.querySelector('input.hs-input[type="email"]');
+    emailInput.value = this.emailInputValue;
+    const onInputEvent = new Event('input', {
+      bubbles: true,
+      cancelable: true,
+    });
+    emailInput.dispatchEvent(onInputEvent);
+    yield timeout(this.config.get('environment') === 'test' ? 0 : 200);
+  }
 
-  didInsertElement() {
-    this._super(...arguments);
-
-    // DOM selector to insert form into
-    const target = get(this, 'target') || `#${get(this, 'elementId')}`;
-
-    if (get(this, 'hasValidFormConfig')) {
-
-      hbspt.forms.create({
-        portalId: get(this, 'portalId'),
-        formId: get(this, 'formId'),
-        target: target,
-      });
-
+  @dropTask
+  *onSubmit() {
+    document.querySelector('input.hs-button[type="submit"]').click();
+    yield timeout(this.config.get('environment') === 'test' ? 0 : 300);
+    if (document.querySelector('.hs-error-msg')) {
+      this.error = document.querySelector('.hs-error-msg').textContent;
     }
   }
-});
+
+  @dropTask
+  *onCheckboxChange() {
+    document.querySelector('input.hs-input[type="checkbox"]').click();
+    yield timeout(this.config.get('environment') === 'test' ? 0 : 100);
+    this.isInputDisabled = !this.isInputDisabled;
+  }
+}
